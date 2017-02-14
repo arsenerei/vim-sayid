@@ -54,6 +54,7 @@ let s:ops = {
         \ 'sayid-get-workspace': [],
         \ 'sayid-query-form-at-point': ['file', 'line'],
         \ 'sayid-remove-trace-fn-at-point': ['file', 'line', 'column', 'source'],
+        \ 'sayid-show-traced': [],
         \ 'sayid-set-view': ['view-name'],
         \ 'sayid-toggle-view': [],
         \ 'sayid-trace-fn-disable-at-point': ['file', 'line', 'column', 'source'],
@@ -66,6 +67,7 @@ let s:ops = {
         \ 'sayid-trace-fn-remove': ['fn-name', 'fn-ns'],
         \ 'sayid-trace-ns-disable': ['fn-ns'],
         \ 'sayid-trace-ns-enable': ['fn-ns'],
+        \ 'sayid-trace-ns-in-file': ['file'],
         \ 'sayid-trace-ns-remove': ['fn-ns'],
         \ 'sayid-version': [],
         \ }
