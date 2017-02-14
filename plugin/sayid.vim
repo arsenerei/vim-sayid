@@ -143,10 +143,11 @@ function! s:query_form_under_cursor() abort
     let current_file = expand('%:p')
     let current_line = line('.')
     echo sayid#sayid_query_form_at_point(current_file, current_line)
-    echo 'okay'
 endfunction
 
 command! SayidQueryUnderCursor :call s:query_form_under_cursor()
+
+nnoremap <silent> gs :sayidqueryundercursor<CR>
 
 augroup SayidAug
     autocmd!
