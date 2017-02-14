@@ -8,7 +8,7 @@ your code.
 # Requirements
 
 * [vim-fireplace](https://github.com/tpope/vim-fireplace)
-* [sayid](https://github.com/bpiel/sayid)
+* [Sayid](https://github.com/bpiel/sayid)
 
 # Installation
 
