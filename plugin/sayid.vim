@@ -159,7 +159,7 @@ command! SayidShowTraced :echo sayid#sayid_show_traced()
 command! SayidTraceNsInFile :echo s:trace_ns_in_file()
 
 if !exists("g:enable_sayid_mappings") || g:enable_sayid_mappings == 1
-    nnoremap gsq :SayidQueryUnderCursor<CR>
+    nnoremap <silent> gsq :SayidQueryUnderCursor<CR>
     nnoremap <silent> gsc :SayidClearLog<CR>
     nnoremap <silent> gsw :SayidGetWorkspace<CR>
     nnoremap <silent> gss :SayidShowTraced<CR>
