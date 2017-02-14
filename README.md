@@ -12,7 +12,7 @@ your code.
 
 # Installation
 
-`Plug 'arsenerei/vim-sayid`
+`Plug 'arsenerei/vim-sayid'`
 
 # Basics
 
