@@ -144,12 +144,27 @@ endfunction
 function! s:query_form_under_cursor() abort
     let current_file = expand('%:p')
     let current_line = line('.')
-    echo sayid#sayid_query_form_at_point(current_file, current_line)
+    return sayid#sayid_query_form_at_point(current_file, current_line)
 endfunction
 
-command! SayidQueryUnderCursor :call s:query_form_under_cursor()
+function! s:trace_ns_in_file() abort
+    let current_file = expand('%:p')
+    return sayid#sayid_trace_ns_in_file(current_file)
+endfunction
 
-nnoremap <silent> gs :sayidqueryundercursor<CR>
+command! SayidQueryUnderCursor :echo s:query_form_under_cursor()
+command! SayidClearLog :call sayid#sayid_clear_log()
+command! SayidGetWorkSpace :echo sayid#sayid_get_workspace()
+command! SayidShowTraced :echo sayid#sayid_show_traced()
+command! SayidTraceNsInFile :echo s:trace_ns_in_file()
+
+if !exists("g:enable_sayid_mappings") || g:enable_sayid_mappings == 1
+    nnoremap gsq :SayidQueryUnderCursor<CR>
+    nnoremap <silent> gsc :SayidClearLog<CR>
+    nnoremap <silent> gsw :SayidGetWorkSpace<CR>
+    nnoremap <silent> gss :SayidShowTraced<CR>
+    nnoremap <silent> gst :SayidTraceNsInFile<CR>
+endif
 
 augroup SayidAug
     autocmd!
