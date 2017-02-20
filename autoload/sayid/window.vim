@@ -106,14 +106,14 @@ function! sayid#window#replace(content)
 
     setlocal modifiable
     " Clear the buffer
-    silent normal! ggvGdd
+    silent normal! ggvG"_dd
 
     " TODO: Figure out why append doesn't output newlines very well.
     " append(0, a:content)
     silent put =a:content
 
     " Delete the top line
-    silent normal! ggdd
+    silent normal! gg"_dd
     setlocal nomodifiable
 endfunction
 
