@@ -94,57 +94,11 @@ for [s:op, s:args] in items(s:ops)
           \ "endfunction"
 endfor
 
-function! s:goto_window(name)
-    if bufwinnr(bufnr(a:name)) != -1
-        exe bufwinnr(bufnr(a:name)) . "wincmd w"
-        return 1
-    else
-        return 0
-    endif
-endfunction
-
-function! s:open_window()
-    let existing_gundo_buffer = bufnr("__Sayid__")
-
-    if existing_gundo_buffer == -1
-        exe "new __Sayid__"
-        wincmd H
-    else
-        let existing_gundo_window = bufwinnr(existing_gundo_buffer)
-
-        if existing_gundo_window != -1
-            if winnr() != existing_gundo_window
-                exe existing_gundo_window . "wincmd w"
-            endif
-        endif
-    endif
-endfunction
-
-function! s:GundoSettingsPreview()
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal noswapfile
-    setlocal nobuflisted
-    setlocal nomodifiable
-    setlocal filetype=diff
-    setlocal nonumber
-    setlocal norelativenumber
-    setlocal nowrap
-    setlocal foldlevel=20
-    setlocal foldmethod=diff
-endfunction
-
-function! sayid#open_window() abort
-    call s:open_window()
-    setlocal modifiable
-    put =g:res
-    setlocal nomodifiable
-endfunction
-
 function! s:query_form_under_cursor() abort
     let current_file = expand('%:p')
     let current_line = line('.')
-    return sayid#sayid_query_form_at_point(current_file, current_line)
+    let content = sayid#sayid_query_form_at_point(current_file, current_line)
+    call sayid#window#replace(content)
 endfunction
 
 function! s:trace_ns_in_file() abort
@@ -152,11 +106,26 @@ function! s:trace_ns_in_file() abort
     return sayid#sayid_trace_ns_in_file(current_file)
 endfunction
 
+function! s:get_workspace() abort
+    let current_line = line('.')
+    let content = sayid#sayid_get_workspace()
+    call sayid#window#replace(content)
+endfunction
+
+function! s:trace_fn(type) abort
+    let ns = fireplace#ns()
+    call sayid#sayid_trace_fn(expand("<cword>"), ns, a:type)
+endfunction
+
 command! SayidQueryUnderCursor :echo s:query_form_under_cursor()
 command! SayidClearLog :call sayid#sayid_clear_log()
-command! SayidGetWorkspace :echo sayid#sayid_get_workspace()
+" command! SayidGetWorkspace :echo sayid#sayid_get_workspace()
+command! SayidGetWorkspace :call s:get_workspace()
 command! SayidShowTraced :echo sayid#sayid_show_traced()
+command! SayidTraceNsInFile :silent call s:trace_ns_in_file()
 command! SayidTraceNsInFile :echo s:trace_ns_in_file()
+command! SayidTraceFnInner :call s:trace_fn('inner')
+command! SayidTraceFnOuter :call s:trace_fn('outer')
 
 if !exists("g:enable_sayid_mappings") || g:enable_sayid_mappings == 1
     nnoremap <silent> gsq :SayidQueryUnderCursor<CR>
@@ -164,10 +133,6 @@ if !exists("g:enable_sayid_mappings") || g:enable_sayid_mappings == 1
     nnoremap <silent> gsw :SayidGetWorkspace<CR>
     nnoremap <silent> gss :SayidShowTraced<CR>
     nnoremap <silent> gst :SayidTraceNsInFile<CR>
+    nnoremap <silent> gsi :SayidTraceFnInner<CR>
+    nnoremap <silent> gso :SayidTraceFnOuter<CR>
 endif
-
-augroup SayidAug
-    autocmd!
-    autocmd BufNewFile __Sayid__ call s:GundoSettingsPreview()
-augroup END
-
