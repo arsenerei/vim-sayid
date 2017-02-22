@@ -126,7 +126,6 @@ endfunction
 
 command! SayidQueryUnderCursor :echo s:query_form_under_cursor()
 command! SayidClearLog :call sayid#sayid_clear_log()
-" command! SayidGetWorkspace :echo sayid#sayid_get_workspace()
 command! SayidGetWorkspace :call s:get_workspace()
 command! SayidShowTraced :echo sayid#sayid_show_traced()
 command! SayidTraceNsInFile :silent call s:trace_ns_in_file()
