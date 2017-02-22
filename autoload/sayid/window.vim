@@ -19,13 +19,12 @@ function! s:deactivate_autocmds()
     augroup END
 endfunction
 
-function! s:open_window(position)
+function! s:open_window()
     " open scratch buffer window and move to it. this will create the buffer if
     " necessary.
     let scr_bufnr = bufnr(s:buf_name)
     if scr_bufnr == -1
-        let cmd = 'vnew'
-        execute a:position . s:resolve_size(100) . cmd . s:buf_name
+        execute 'vnew ' . s:buf_name
         setlocal filetype=sayid
         setlocal bufhidden=hide
         setlocal nomodifiable
@@ -35,8 +34,8 @@ function! s:open_window(position)
         setlocal nofoldenable
         setlocal nonumber
         setlocal noswapfile
-        setlocal winfixheight
-        setlocal winfixwidth
+        " setlocal winfixheight
+        " setlocal winfixwidth
         " call s:activate_autocmds(bufnr('%'))
     else
         let scr_winnr = bufwinnr(scr_bufnr)
@@ -46,7 +45,7 @@ function! s:open_window(position)
             endif
         else
             let cmd = 'vsplit'
-            execute a:position . s:resolve_size(100) . cmd . ' +buffer' . scr_bufnr
+            execute cmd . ' +buffer' . scr_bufnr
         endif
     endif
 endfunction
@@ -96,8 +95,7 @@ function! sayid#window#open()
         echoerr 'Unable to open scratch buffer from command line window.'
         return
     endif
-    let position = 'topleft '
-    call s:open_window(position)
+    call s:open_window()
     silent normal! G^
 endfunction
 
