@@ -65,6 +65,7 @@ let s:ops = {
         \ 'sayid-trace-fn-inner-trace-at-point': ['file', 'line', 'column', 'source'],
         \ 'sayid-trace-fn-outer-trace-at-point': ['file', 'line', 'column', 'source'],
         \ 'sayid-trace-fn-remove': ['fn-name', 'fn-ns'],
+        \ 'sayid-trace-fn-in-dir': ['dir'],
         \ 'sayid-trace-ns-disable': ['fn-ns'],
         \ 'sayid-trace-ns-enable': ['fn-ns'],
         \ 'sayid-trace-ns-in-file': ['file'],
@@ -117,15 +118,28 @@ function! s:trace_fn(type) abort
     call sayid#sayid_trace_fn(expand("<cword>"), ns, a:type)
 endfunction
 
+function! s:query_id(mod) abort
+    let trace_id = substitute(expand("<cword>"), '^:', '',  '')
+    let content = sayid#sayid_buf_query_id_w_mod(trace_id, a:mod)
+    call sayid#window#replace(content)
+endfunction
+
 command! SayidQueryUnderCursor :echo s:query_form_under_cursor()
 command! SayidClearLog :call sayid#sayid_clear_log()
 " command! SayidGetWorkspace :echo sayid#sayid_get_workspace()
 command! SayidGetWorkspace :call s:get_workspace()
 command! SayidShowTraced :echo sayid#sayid_show_traced()
 command! SayidTraceNsInFile :silent call s:trace_ns_in_file()
-command! SayidTraceNsInFile :echo s:trace_ns_in_file()
 command! SayidTraceFnInner :call s:trace_fn('inner')
 command! SayidTraceFnOuter :call s:trace_fn('outer')
+command! SayidQueryId :call s:query_id('')
+command! SayidQueryIdDescendants :call s:query_id('d')
+
+function! sayid#buffer_mappings()
+    nnoremap <silent> <buffer> i :SayidQueryId<CR>
+    nnoremap <silent> <buffer> d :SayidQueryIdDescendants<CR>
+    nnoremap <silent> <buffer> <BS> :SayidGetWorkspace<CR>
+endfunction
 
 if !exists("g:enable_sayid_mappings") || g:enable_sayid_mappings == 1
     nnoremap <silent> gsq :SayidQueryUnderCursor<CR>

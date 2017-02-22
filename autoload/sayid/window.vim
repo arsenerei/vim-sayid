@@ -37,6 +37,7 @@ function! s:open_window()
         " setlocal winfixheight
         " setlocal winfixwidth
         " call s:activate_autocmds(bufnr('%'))
+        call sayid#buffer_mappings()
     else
         let scr_winnr = bufwinnr(scr_bufnr)
         if scr_winnr != -1
