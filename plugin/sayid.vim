@@ -119,8 +119,16 @@ function! s:trace_fn(type) abort
 endfunction
 
 function! s:query_id(mod) abort
+    normal! $
     let trace_id = substitute(expand("<cword>"), '^:', '',  '')
     let content = sayid#sayid_buf_query_id_w_mod(trace_id, a:mod)
+    call sayid#window#replace(content)
+endfunction
+
+function! s:query_fn(mod) abort
+    normal! ^W
+    let fn_name = substitute(expand("<cWORD>"), '^:', '',  '')
+    let content = sayid#sayid_buf_query_fn_w_mod(fn_name, a:mod)
     call sayid#window#replace(content)
 endfunction
 
@@ -133,10 +141,14 @@ command! SayidTraceFnInner :call s:trace_fn('inner')
 command! SayidTraceFnOuter :call s:trace_fn('outer')
 command! SayidQueryId :call s:query_id('')
 command! SayidQueryIdDescendants :call s:query_id('d')
+command! SayidQueryFn :call s:query_fn('')
+command! SayidQueryFnDescendants :call s:query_fn('d')
 
 function! sayid#buffer_mappings()
-    nnoremap <silent> <buffer> i :SayidQueryId<CR>
-    nnoremap <silent> <buffer> d :SayidQueryIdDescendants<CR>
+    nnoremap <silent> <buffer> ii :SayidQueryId<CR>
+    nnoremap <silent> <buffer> id :SayidQueryIdDescendants<CR>
+    nnoremap <silent> <buffer> fi :SayidQueryFn<CR>
+    nnoremap <silent> <buffer> fd :SayidQueryFnDescendants<CR>
     nnoremap <silent> <buffer> <BS> :SayidGetWorkspace<CR>
 endfunction
 
