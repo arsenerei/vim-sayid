@@ -46,9 +46,12 @@ line:
 Explore your tracings with the following inside the buffer:
 
 `ii`: investigate the input and output of a particular trace-id
+
 `id`: investigate the intput and output of a particular trace-id and its
       descendants
+      
 `fi`: investigate the input and output of a particular function
+
 `fd`: investigate the intput and output of a particular function and its
       descendants
 
