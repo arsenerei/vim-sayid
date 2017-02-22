@@ -54,7 +54,7 @@ Explore your tracings with the following inside the buffer:
 
 # TODO
 
-[x] Have a persistent Sayid buffer
-[x] Provide default mappings for basic functionality (e.g., enable/disable
-    tracing, query, show-workspace)
-[x] Syntax highlighting
+- [x] Have a persistent Sayid buffer
+- [x] Provide default mappings for basic functionality (e.g., enable/disable
+      tracing, query, show-workspace)
+- [x] Syntax highlighting
