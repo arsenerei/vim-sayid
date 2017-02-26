@@ -152,7 +152,7 @@ function! sayid#buffer_mappings()
     nnoremap <silent> <buffer> <BS> :SayidGetWorkspace<CR>
 endfunction
 
-if !exists("g:enable_sayid_mappings") || g:enable_sayid_mappings == 1
+if get(g:, 'enable_sayid_mappings', 1) == 1
     nnoremap <silent> gsq :SayidQueryUnderCursor<CR>
     nnoremap <silent> gsc :SayidClearLog<CR>
     nnoremap <silent> gsw :SayidGetWorkspace<CR>
