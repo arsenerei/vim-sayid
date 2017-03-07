@@ -150,6 +150,7 @@ function! sayid#buffer_mappings()
     nnoremap <silent> <buffer> fi :SayidQueryFn<CR>
     nnoremap <silent> <buffer> fd :SayidQueryFnDescendants<CR>
     nnoremap <silent> <buffer> <BS> :SayidGetWorkspace<CR>
+    nnoremap <silent> <buffer> H :SayidGetWorkspace<CR>
 endfunction
 
 if get(g:, 'enable_sayid_mappings', 1) == 1
