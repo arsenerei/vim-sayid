@@ -46,6 +46,7 @@ let s:ops = {
         \ 'sayid-buf-query-fn-w-mod': ['fn-name', 'mod'],
         \ 'sayid-buf-query-id-w-mod': ['trace-id', 'mod'],
         \ 'sayid-clear-log': [],
+        \ 'sayid-disable-all-traces': [],
         \ 'sayid-find-all-ns-roots': [],
         \ 'sayid-get-enabled-trace-count': [],
         \ 'sayid-get-meta-at-point': ['source', 'file', 'line'],
@@ -134,6 +135,7 @@ endfunction
 
 command! SayidQueryUnderCursor :echo s:query_form_under_cursor()
 command! SayidClearLog :call sayid#sayid_clear_log()
+command! SayidDisableAllTraces :call sayid#sayid_disable_all_traces()
 command! SayidGetWorkspace :call s:get_workspace()
 command! SayidShowTraced :echo sayid#sayid_show_traced()
 command! SayidTraceNsInFile :silent call s:trace_ns_in_file()
