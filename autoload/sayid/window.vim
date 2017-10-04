@@ -56,8 +56,7 @@ function! sayid#window#replace(content)
     silent normal! ggvG"_dd
 
     " TODO: Figure out why append doesn't output newlines very well.
-    " append(0, a:content)
-    silent put =a:content
+    call append(0, split(a:content, '\n'))
 
     " Delete the top line
     silent normal! gg"_dd
