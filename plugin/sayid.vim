@@ -8,6 +8,22 @@ if exists("g:loaded_sayid") || v:version < 700 || &cp
 endif
 let g:loaded_sayid = 1
 
+function! sayid#sayid_buf_query_fn_w_mod_response_parser(response) abort
+    let v1 = a:response.value
+    let v2 = substitute(v1, '\\"', '"', "g")
+    let v3 = substitute(v2, "\\\\n", "\n", "g")
+    let v4 = substitute(v3, "\\\\n$", "", "")
+    return v4
+endfunction
+
+function! sayid#sayid_buf_query_id_w_mod_response_parser(response) abort
+    let v1 = a:response.value
+    let v2 = substitute(v1, '\\"', '"', "g")
+    let v3 = substitute(v2, "\\\\n", "\n", "g")
+    let v4 = substitute(v3, "\\\\n$", "", "")
+    return v4
+endfunction
+
 function! sayid#call(msg) abort
     if !empty(a:msg.op) && fireplace#op_available(a:msg.op)
         let response = fireplace#message(a:msg)[0]
@@ -16,18 +32,21 @@ function! sayid#call(msg) abort
             " But I may be wrong.
             " NB: sayid-show-traced has non-text formatting data inside the
             " text properties section
-            let v1 = matchstr(response.value, '".\{-}"')
-            let v2 = substitute(v1, '"', '', "g")
-            let v3 = substitute(v2, "\\\\n", "\n", "g")
-            let v4 = substitute(v3, "\\\\n$", "", "") " remove the extra newline
+            let output = ""
+            if a:msg.op == 'sayid-buf-query-id-w-mod'
+                let output = sayid#sayid_buf_query_id_w_mod_response_parser(response)
+            elseif a:msg.op == 'sayid-buf-query-fn-w-mod'
+                let output = sayid#sayid_buf_query_fn_w_mod_response_parser(response)
+            else
+                let v1 = matchstr(response.value, '".\{-}"')
+                let v2 = substitute(v1, '"', '', "g")
+                let v3 = substitute(v2, "\\\\n", "\n", "g")
+                let v4 = substitute(v3, "\\\\n$", "", "") " remove the extra newline
+                let output = v4
+            endif
 
-            " If after we extract out the non text formatting data we're left
-            " with empty lines let's just return an empty string.
-            " if v3 =~ "\n\+"
-            "     return ''
-            " else
-                return v4
-            " endif
+            return output
+
         else
             " TODO: check me
             return ''
