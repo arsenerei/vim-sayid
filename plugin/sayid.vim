@@ -24,6 +24,14 @@ function! sayid#sayid_buf_query_id_w_mod_response_parser(response) abort
     return v4
 endfunction
 
+function! sayid#sayid_query_form_at_point_response_parser(response) abort
+    let v1 = a:response.value
+    let v2 = substitute(v1, '\\"', '"', "g")
+    let v3 = substitute(v2, "\\\\n", "\n", "g")
+    let v4 = substitute(v3, "\\\\n$", "", "")
+    return v4
+endfunction
+
 function! sayid#call(msg) abort
     if !empty(a:msg.op) && fireplace#op_available(a:msg.op)
         let response = fireplace#message(a:msg)[0]
@@ -37,6 +45,8 @@ function! sayid#call(msg) abort
                 let output = sayid#sayid_buf_query_id_w_mod_response_parser(response)
             elseif a:msg.op == 'sayid-buf-query-fn-w-mod'
                 let output = sayid#sayid_buf_query_fn_w_mod_response_parser(response)
+              elseif a:msg.op == 'sayid-query-form-at-point'
+                let output = sayid#sayid_query_form_at_point_response_parser(response)
             else
                 let v1 = matchstr(response.value, '".\{-}"')
                 let v2 = substitute(v1, '"', '', "g")
@@ -47,6 +57,8 @@ function! sayid#call(msg) abort
 
             return output
 
+    let current_line = line('.')
+    let content = sayid#sayid_query_form_at_point(current_file, current_line)
         else
             " TODO: check me
             return ''
