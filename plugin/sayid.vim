@@ -56,9 +56,6 @@ function! sayid#call(msg) abort
             endif
 
             return output
-
-    let current_line = line('.')
-    let content = sayid#sayid_query_form_at_point(current_file, current_line)
         else
             " TODO: check me
             return ''
